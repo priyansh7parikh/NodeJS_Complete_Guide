@@ -15,20 +15,21 @@ const server = http.createServer((req,res)=>{
         res.write('</html>');
         return res.end();
     }
-    if (url === '/message' && method === 'POST') {
+    if (url === '/message' && method === 'POST') 
+    {
         const body = [];
         req.on('data', (chunk)=>{
             body.push(chunk);
         });
         req.on('end',()=>{
-            const parsedBody= Buffer.concat(body).toString();
-            const message =parsedBody.split('=')[1];
-            fs.writeFileSync('message.txt', message);
-        });
+        const parsedBody= Buffer.concat(body).toString();
+        const message =parsedBody.split('=')[1];
+        fs.writeFileSync('message.txt', message);
         res.statusCode = 302;
         res.setHeader('Location', '/');
         return res.end();
-      }
+        });
+    }
     res.setHeader('Content-Type','text/html');
     res.write('<html>');
     res.write('<head><title>My First Page</title></head>');
@@ -36,5 +37,5 @@ const server = http.createServer((req,res)=>{
     res.write('</html>');
     res.end();
 });
+
 server.listen(3000);
-// console.log(server.address().port);
