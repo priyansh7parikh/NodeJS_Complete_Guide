@@ -1,27 +1,34 @@
-const products = [];
+// const products = [];
+
+const Product = require('../models/product')
 
 exports.getAddProduct = (req, res, next) => {
-    res.render('add-product', {
-      pageTitle: 'Add Product',
-      path: '/admin/add-product',
-      formsCSS: true,
-      productCSS: true,
-      activeAddProduct: true
-    });
-  }
+  res.render('add-product', {
+    pageTitle: 'Add Product',
+    path: '/admin/add-product',
+    formsCSS: true,
+    productCSS: true,
+    activeAddProduct: true
+  });
+};
 
-  exports.postAddProduct = (req, res, next) => {
-    products.push({ title: req.body.title });
-    res.redirect('/');
-  }
+exports.postAddProduct = (req, res, next) => {
+  // products.push({ title: req.body.title });
+  const product = new Product(req.body.title);
+  product.save()
+  res.redirect('/');
+};
 
-  exports.getProduct = (req, res, next) => {
-    res.render('shop', {
-      prods: products,
-      pageTitle: 'Shop',
-      path: '/',
-      hasProducts: products.length > 0,
-      activeShop: true,
-      productCSS: true
-    });
-  }
+exports.getProducts = (req, res, next) => {
+  const products = Product.fetchAll();
+  // const product = new Product();
+  // products = product.fetchAll()
+  res.render('shop', {
+    prods: products,
+    pageTitle: 'Shop',
+    path: '/',
+    hasProducts: products.length > 0,
+    activeShop: true,
+    productCSS: true
+  });
+};
